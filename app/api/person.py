@@ -23,4 +23,4 @@ async def check_person(person: PersonCheck, db: Session = Depends(get_db)):
     if error:
         return BaseResponse(status="400", message=f"Cannot get person: {error}", data=None)
     else:
-        return BaseResponse(status="200", message="Get persons", data=persons)
+        return BaseResponse(status="200", message="Get persons successfully", data=persons)
