@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file: ".env"
+    depends_on:
+      - db  # Ensure FastAPI starts after the database is up
+
+  db:
+    image: postgres:15
+    restart: always
+    env_file: ".env"
+    volumes:
+      - ./app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+  
+  test:
+    build:
+      context: .
+      dockerfile: ./tests/Dockerfile
+    env_file: ".env"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
